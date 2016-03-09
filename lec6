@@ -1,0 +1,47 @@
+#include <cstdio>
+
+char memo[4096];
+int base;
+
+void init(){
+	base = 0x220;
+	FILE *fp = fopen("data.txt", "r");
+	int num;
+	for (int i = 0; i < 4096; i++){
+		fscanf(fp,"%d", &num);
+		memo[i] = num; 
+	}
+	fclose(fp);
+}
+
+void visitmemo(int va){
+	printf("Virtual address %0x\n", va);
+	int pde = va >> 10;
+	int pte = (va >> 5) & 31;
+	int pt = memo[base + pde];
+	int valid = (pt >> 7) & 1;
+	pt = pt & 127;
+	printf("  --> pde index:%0x   pde contents:(valid %d, pfn %0x)\n", pde, valid, pt);
+	if (!valid){
+		printf("    --> Fault (page directory entry not valid)\n");
+		return;
+	}
+	int pfn = memo[(pt << 5) + pte];
+	valid &= ((pfn >> 7) & 1);
+	pfn &= 127;
+	printf("    -->pte index:%0x   pte contents:(valid %d, pfn %0x)\n", pte, valid, pfn);
+	if (!valid){
+		printf("      --> Fault (page table entry not valid)\n");
+		return;
+	}
+	int pa = (pfn << 5) + (va & 31);
+	int data = memo[pa];
+	printf("      --> Translates to physical Address %0x --> Value: %d\n", pa, data);
+}
+
+int main(){
+	init();
+	visitmemo(0x317a);
+	visitmemo(0x4546);
+	return 0;
+}
