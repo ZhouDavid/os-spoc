@@ -1,30 +1,3 @@
-
-Skip to content
-This repository
-
-    Pull requests
-    Issues
-    Gist
-
-    @ZhouDavid
-
-1
-0
-
-    0
-
-ZhouDavid/os-spoc
-Code
-Issues 0
-Pull requests 0
-Wiki
-Pulse
-Graphs
-Settings
-os-spoc/lec9
-605b54d a minute ago
-@ZhouDavid ZhouDavid Create lec9
-233 lines (208 sloc) 8.83 KB
 import sys
 from optparse import OptionParser
 import random
@@ -138,12 +111,15 @@ else:
         victim = -1        
         if idx == -1:
             # miss, replace?
-            print ('BUG count, pageframesize:', count, pageframesize)
+            #print ('BUG count, pageframesize:', count, pageframesize)
             if count == pageframesize:
                 # must replace
                 if policy == 'FIFO' or policy == 'LRU':
                     victim = memory.pop(0)
                 elif policy == 'PageLost':
+                    interval=t_cur-t_last
+                    print("tcur=%d,tlast=%d,interval=%d"%(t_cur,t_last,interval))
+
                     interval=t_cur-t_last
                     #print("tcur=%d,tlast=%d,interval=%d"%(t_cur,t_last,interval))
                     t_last = t_cur
@@ -257,8 +233,3 @@ else:
     print ('')
     print ('FINALSTATS hits %d   misses %d   hitrate %.2f' % (hits, miss, (100.0*float(hits))/(float(hits)+float(miss))))
     print ('')
-
-    Status API Training Shop Blog About 
-
-    © 2016 GitHub, Inc. Terms Privacy Security Contact Help 
-
