@@ -2,16 +2,15 @@
 #include <cstring>
 #include <algorithm> 
 using namespace std;
-
-const int INF = 1 << 30;
-const int MAXN = 100;
+#define MAXN 100
+#define INF 1<<30
 
 int n;
 int start[MAXN], work[MAXN], end[MAXN];
 
 int main() {
-	freopen("input.txt", "r", stdin);
-	freopen("output.txt", "w", stdout); 
+	freopen("in.txt", "r", stdin);
+	freopen("out.txt", "w", stdout); 
 	while (scanf("%d %d %d", &start[n], &work[n], &end[n]) != EOF)
 		++n;
 	
