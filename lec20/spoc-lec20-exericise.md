@@ -5,7 +5,11 @@
 	cvp->count的含义是等待条件变量的进程数。
 	cvp->count不可能<0，因为cond_wait函数中对cvp->count的操作都是先加一、后减一，所以不论中间是否被打断，都不可能出现<0的情况。
 	cvp->count可能>1，可能多个进程等待同一个条件变量。
-	cvp->owner->next_count含义是什么？cvp->owner->next_count是否可能<0, 是否可能>1？请举例或说明原因。
+
+cvp->owner->next_count含义是什么？cvp->owner->next_count是否可能<0, 是否可能>1？请举例或说明原因。
+	
+	不可能>1，现在考虑当cvp->owner->next_count == 1时，next_count是否会增加。当被B唤醒的A进程结
+	束后，会首先检查next_count，如果>0，则会优先唤醒等待next_count的B。next_count --.
 
 2.owner表示条件变量cvp的宿主是哪个管程，next_count表示了由于发出singal_cv而睡眠的进程个数。
 
@@ -14,4 +18,4 @@
 
 2.目前的lab7-answer中管程的实现是Hansen管程类型还是Hoare管程类型？请在lab7-answer中实现另外一种类型的管程。
 
-	Hoare类型
+	Hoare类型 通过next_count>0的条件分支来判断。
